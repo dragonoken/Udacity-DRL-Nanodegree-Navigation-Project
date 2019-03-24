@@ -13,7 +13,7 @@ This project is being done as a part of [Deep Reinforcement Learning Udacity Nan
 
 <sub>Although there are multiple agents present in the image above on the right, only a single agent is used to solve this environment.</sub>
 
-For this project, I will train an agent to navigate in a large, square world while collecting (giant, delicious) bananas!
+For this project, an agent to learn to navigate in a large, square world while collecting (giant, delicious) bananas!
 
 In this environment, yellow bananas and blue bananas are constantly generated, and the agent must collect as many yellow bananas as possible while avoiding blue bananas.
 
@@ -28,4 +28,4 @@ the agent must make one of `4` discrete actions:
 * `2` - turn left.
 * `3` - turn right.
 
-The task is episodic, and in order to solve the environment for this project, the agent must get an average score of `+13` over 100 consecutive episodes, or trials.
+The task is episodic, and in order to solve the environment for this project, the agent must get an average score of `+13` over 100 consecutive episodes, or trials, each consisting of 300 time steps.
