@@ -7,9 +7,18 @@ This project is being done as a part of [Deep Reinforcement Learning Udacity Nan
 
 ## Environment Description
 
-| Agent View | Top View |
-| :---       | :---     |
-| ![first-view](./images/banana_collector_firstview.gif) | ![top-view](./images/banana_collector_topview.gif) |
+<table class="unchanged rich-diff-level-one">
+  <thead><tr>
+      <th align="left">Agent View</th>
+      <th align="left">Top View</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td align="left"><img src="https://github.com/dragonoken/Udacity-DRL-Nanodegree-Navigation-Project/blob/master/images/banana_collector_firstview.gif" alt="first-view" style="max-width:100%;"></td>
+      <td align="left"><img src="https://github.com/dragonoken/Udacity-DRL-Nanodegree-Navigation-Project/blob/master/images/banana_collector_topview.gif" alt="top-view" style="max-width:100%;"></td>
+    </tr>
+  </tbody>
+</table>
 
 <sub>Although there are multiple agents present in the image above on the right, only a single agent is used to solve this environment.</sub>
 
