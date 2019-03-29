@@ -77,9 +77,14 @@ class Agent():
         assert isinstance(linear_type, str) and linear_type.strip().lower() in ('linear', 'noisy')
         assert isinstance(factorized, bool)
 
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+
         self.state_size          = state_size
         self.action_size         = action_size
-        self.seed                = random.seed(seed)
+        self.seed                = seed
         self.batch_size          = batch_size
         self.buffer_size         = buffer_size
         self.start_since         = start_since
@@ -106,14 +111,14 @@ class Agent():
         self.delta_z  = (v_max - v_min) / (n_atoms - 1)
 
         # Q-Network
-        self.qnetwork_local  = QNetwork(state_size, action_size, n_atoms, linear_type, initial_sigma, factorized, seed).to(device)
-        self.qnetwork_target = QNetwork(state_size, action_size, n_atoms, linear_type, initial_sigma, factorized, seed).to(device)
+        self.qnetwork_local  = QNetwork(state_size, action_size, n_atoms, linear_type, initial_sigma, factorized).to(device)
+        self.qnetwork_target = QNetwork(state_size, action_size, n_atoms, linear_type, initial_sigma, factorized).to(device)
         self.qnetwork_target.load_state_dict(self.qnetwork_local.state_dict())
 
         self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=lr, weight_decay=weight_decay)
 
         # Replay memory
-        self.memory = ReplayBuffer(action_size, buffer_size, batch_size, n_multisteps, gamma, a, seed)
+        self.memory = ReplayBuffer(action_size, buffer_size, batch_size, n_multisteps, gamma, a)
         # Initialize time step (for updating every UPDATE_EVERY steps and TARGET_UPDATE_EVERY steps)
         self.u_step = 0
         self.t_step = 0
@@ -215,7 +220,7 @@ class Agent():
         new_priorities = cross_entropy.detach().add(self.priority_eps).cpu().numpy()
         loss = cross_entropy.mul(is_weights.view(-1)).mean()
         """
-        kl_divergence = F.kl_div(F.log_softmax(pred_distributions, dim=-1), target_distributions, reduction='none').sum(dim=-1, keepdim=False)
+        kl_divergence = F.kl_div(F.log_softmax(pred_distributions, dim=-1), target_distributions, reduce=False).sum(dim=-1, keepdim=False)
         new_priorities = kl_divergence.detach().add(self.priority_eps).cpu().numpy()
         loss = kl_divergence.mul(is_weights.view(-1)).mean()
 #         """
@@ -245,7 +250,7 @@ class Agent():
 class ReplayBuffer:
     """Fixed-size buffer to store experience tuples."""
 
-    def __init__(self, action_size, buffer_size, batch_size, n_multisteps, gamma, a, seed):
+    def __init__(self, action_size, buffer_size, batch_size, n_multisteps, gamma, a):
         """Initialize a ReplayBuffer object.
 
         Params
@@ -256,7 +261,6 @@ class ReplayBuffer:
             n_multisteps (int): number of time steps to consider for each experience
             gamma (float): discount factor
             a (float): priority exponent parameter
-            seed (int): random seed
         """
         self.action_size = action_size
         self.buffer_size = buffer_size
@@ -269,7 +273,6 @@ class ReplayBuffer:
         self.multistep_collector = deque(maxlen=n_multisteps)
         self.max_priority_a = 1.
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
-        self.seed = random.seed(seed)
 
     def add(self, state, action, reward, next_state, done):
         """Add a new experience to memory."""
