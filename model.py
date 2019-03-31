@@ -76,7 +76,7 @@ class NoisyLinear(nn.Module):
 class QNetwork(nn.Module):
     """Actor (Policy) Model."""
 
-    def __init__(self, state_size, action_size, n_atoms=N_ATOMS, linear_type=LINEAR, initial_sigma=INIT_SIGMA, factorized=FACTORIZED, seed=SEED):
+    def __init__(self, state_size, action_size, n_atoms=N_ATOMS, linear_type=LINEAR, initial_sigma=INIT_SIGMA, factorized=FACTORIZED):
         """Initialize parameters and build model.
         Params
         ======
@@ -86,7 +86,6 @@ class QNetwork(nn.Module):
             linear_type (str): type of linear layers ('linear', 'noisy')
             initial_sigma (float): initial weight value for noise parameters
                 when using noisy linear layers
-            seed (int): Random seed
         """
         super(QNetwork, self).__init__()
         self.state_size = state_size
@@ -94,7 +93,6 @@ class QNetwork(nn.Module):
         self.n_atoms = n_atoms
         self.linear_type = linear_type.lower()
         self.factorized = bool(factorized)
-        self.seed = torch.manual_seed(seed)
 
         def noisy_layer(in_features, out_features):
             return NoisyLinear(in_features, out_features, True, initial_sigma, factorized)
