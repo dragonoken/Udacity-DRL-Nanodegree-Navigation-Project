@@ -82,8 +82,8 @@ The architecture of my DQN is as follows:
     <td align="center" colspan="1">Noisy Linear ([batch_size, 256], [batch_size, 128])</td>
   </tr>
   <tr>
-    <td align="center" colspan="1">Noisy Linear ([batch_size, 128], [batch_size, n_atoms])</td>
-    <td align="center" colspan="1">Noisy Linear ([batch_size, 128], [batch_size, action_size * n_atoms])</td>
+    <td align="center" colspan="1">Noisy Linear<br/>([batch_size, 128], [batch_size, n_atoms])</td>
+    <td align="center" colspan="1">Noisy Linear<br/>([batch_size, 128], [batch_size, action_size * n_atoms])</td>
   </tr>
   <tr>
     <td align="center" colspan="2">Output (, [batch_size, action_size, n_atoms])</td>
